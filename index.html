@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hyperliquid Calculator</title>
+  <title>Hyperliquid Liquidation Price Calculator</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     input, select { margin: 5px 0; padding: 5px; width: 200px; }
@@ -11,13 +11,10 @@
   </style>
 </head>
 <body>
-  <h2>Hyperliquid Liquidation & Profit Calculator</h2>
+  <h2>Hyperliquid Liquidation Price Calculator</h2>
 
   <label>Entry Price ($):</label><br>
   <input type="number" id="entryPrice" step="0.01"><br>
-
-  <label>Exit Price ($):</label><br>
-  <input type="number" id="exitPrice" step="0.01"><br>
 
   <label>Position Size ($):</label><br>
   <input type="number" id="positionSize" step="0.01"><br>
@@ -34,17 +31,15 @@
   <button onclick="calculate()">Calculate</button>
 
   <div class="result" id="liqPriceResult"></div>
-  <div class="result" id="profitResult"></div>
 
   <script>
     function calculate() {
       const entryPrice = parseFloat(document.getElementById('entryPrice').value);
-      const exitPrice = parseFloat(document.getElementById('exitPrice').value);
       const positionSize = parseFloat(document.getElementById('positionSize').value);
       const leverage = parseFloat(document.getElementById('leverage').value);
       const positionType = document.getElementById('positionType').value;
 
-      if (isNaN(entryPrice) || isNaN(exitPrice) || isNaN(positionSize) || isNaN(leverage)) {
+      if (isNaN(entryPrice) || isNaN(positionSize) || isNaN(leverage)) {
         alert('Please fill in all fields with valid numbers.');
         return;
       }
@@ -53,10 +48,8 @@
       const marginAvailable = positionSize / leverage;
 
       const liqPrice = entryPrice - side * (marginAvailable / positionSize) / (1 - leverage * side);
-      const profit = (exitPrice - entryPrice) * positionSize * side;
 
       document.getElementById('liqPriceResult').textContent = `Estimated Liquidation Price: $${liqPrice.toFixed(2)}`;
-      document.getElementById('profitResult').textContent = `Potential Profit/Loss: $${profit.toFixed(2)}`;
     }
   </script>
 </body>
